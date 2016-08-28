@@ -1,0 +1,293 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>PDII</title>
+<style type="text/css">
+body{margin:0 auto; background:#ddd;}
+#main{float:left; margin:0 300px; width:740px; margin-top:150px;}
+#tbl1,tbl3,#restbl{float:left; width:335px; margin-right:30px;}
+.row{ background:gray; border-bottom:1px solid #4d4d4d; padding:5px;}
+.t1c1, .t2c1{float:left;width:170px; background:gray; color:white; font-size:20px;}
+.t1c2 .t2c2{}
+.col2_txt{width:140px; height:25px; background:#ededed;}
+
+#result, #clr_all{width:100px; height:30px; font-size:18px; background:#adadad; color:#fff;}
+#rhdrow{float:left; width:325px}
+#t2_hd{float: left; width: 172px;}
+#unit{float:left; color:blue;}
+#close{float:right;}
+</style>
+<script src="jquery-1.11.3.js"></script>
+<script type="text/javascript">
+
+$(document).ready(function(){
+$("#tbl2, #tbl3, #tbl4, #close").hide();
+
+
+//tbl2  show & close show hide function
+
+//$("#result").click(function(){
+//$("#tbl2").show(200);
+$("#tbl2").hover(function(){
+$("#close").show();
+},function(){
+$("#close").hide();
+});
+//});
+
+//onclick to close tble2 hide function
+$("#close").click(function(){
+$("#tbl2, #tbl4").hide();
+});
+});
+
+//clear text value
+function clrtxt(x){
+	x.value=""
+}
+
+function res(){
+$("#tbl4").hide();
+$("#rDtrRow").show();
+var ppt, dtr, son, hb_wf, ehb_wf, rppt, edtr, eson, gen, msr;
+ppt=document.frm.property.value;
+dtr=document.frm.daughter.value;
+son=document.frm.son.value;
+hb_wf=document.frm.gender.value;
+gen=document.getElementById("gender").innerHTML;
+msr=document.frm.sel2.value;
+
+if(msr=="Desim"){
+ppt=ppt/435.6;
+document.getElementById("unit").innerHTML=msr;
+}
+else
+document.getElementById("unit").innerHTML=msr;
+
+
+
+if(gen=="Number of Wife")
+ehb_wf=(ppt/8)/hb_wf;//Eatch wife property
+else
+ehb_wf=(ppt/4)/hb_wf;
+rppt=ppt-(ehb_wf*hb_wf);//rest proterty
+
+
+//if son=0, then the progrum is herre..
+
+if(son==0 && dtr!=0){
+var po_bro, po_sis, po_rppt, x, alldtr, epo_bro, epo_sis;
+po_bro=document.frm.pobro.value;
+po_sis=document.frm.posis.value;
+	if(dtr==1){
+	edtr=rppt/2;
+	po_rppt=rppt-edtr;
+	x=2*po_bro+Number(po_sis);
+	epo_sis=po_rppt/x;
+	epo_bro=epo_sis*2;
+	}
+	else{
+	alldtr=(2*rppt)/3;
+	edtr=alldtr/dtr;
+	po_rppt=rppt-alldtr;
+	x=2*po_bro+Number(po_sis);
+	epo_sis=po_rppt/x;
+	epo_bro=epo_sis*2;
+	}
+document.frm.rpobro.value=epo_bro;
+document.frm.rposis.value=epo_sis;
+$("#rson_row").hide();
+$("#tbl2, #tbl4").show(250);
+}
+else if(dtr==0){
+	$("#rDtrRow").hide();
+	x=2*son+Number(dtr);
+	edtr=rppt/x;//Eatch Daughter property
+	eson=2*edtr;//Eatch Son property
+}
+else
+{
+$("#rson_row").show();
+$("#rDtrRow").show();
+x=2*son+Number(dtr);
+edtr=rppt/x;//Eatch Daughter property
+eson=2*edtr;//Eatch Son property
+}
+
+document.frm.rson.value=eson;
+document.frm.rdaughter.value=edtr;
+document.frm.rgender.value=ehb_wf;
+$("#tbl2").show(250);
+}
+
+
+function gender(){
+var x=document.frm.sel1.innerHTML;
+document.getElementById("gender").innerHTML=x;
+}
+
+function ch(){
+	var x=document.frm.sel1.value;
+	if(x=="Male"){
+	document.getElementById("gender").innerHTML="Number of Wife";
+	document.getElementById("gent2").innerHTML="Each Wife";
+	document.getElementById("sel1_gen").value="";
+			var textbox = document.getElementById("sel1_gen");
+			textbox.readOnly = "";//readOnly is cese-sensitive
+
+	}
+	else
+	{
+	document.getElementById("gender").innerHTML="Husband";
+	document.getElementById("gent2").innerHTML="Husband";
+	document.getElementById("sel1_gen").value="1";
+		var textbox = document.getElementById("sel1_gen");
+		textbox.readOnly = "readonly";//readOnly is cese-sensitive
+	document.getElementById("sel1_gen").onclick="";
+
+	}
+}
+
+
+function pptoinfo(){
+ var x=document.frm.son.value;
+
+ if(x==0){
+
+// document.getElementById("tbl3").style.display="block";	
+$("#tbl3").show(250);
+}
+else{
+	$("#tbl3").hide(250);
+document.getElementById("pobro_text").value="";
+document.getElementById("posis_text").value="";	
+	}
+}
+
+function checkval(x){
+	var y=x.value;
+	if(isNaN(y))
+	x.value="";
+	else
+	x.value=y;
+}
+
+//clear all value
+	function clrAll() {
+    var x=document.getElementsByClassName("clr_txt");
+	for(i=0;i<6;i++)
+	x[i].value = "";
+}
+</script>
+
+</head>
+
+<body>
+<div id="main">
+<form id="frm" name="frm" method="post" action="Untitled-2.html">
+<div id="tbl1">
+	<div class="row">PDII</div>
+
+	<div class="row">
+		<div class="t1c1">Unit</div>
+		<div class="t1c2">
+			<select name="sel2" id="sel2" class="col2_txt">
+				<option value="Foot" selected="selected">Foot</option>
+				<option value="Desim">Desim</option>
+			</select>
+		</div>
+	</div>
+	<div class="row">
+		<div class="t1c1">Gender</div>
+		<div class="t1c2">
+			<select name="sel1" id="sel1" class="col2_txt" onclick="ch();">
+				<option value="Male" selected="selected">Male</option>
+				<option value="Female">Female</option>
+			</select>
+		</div>
+	</div>
+	<div class="row">
+		<div id="gender" class="t1c1">Number of Wife</div>
+		<div class="t1c2"><input type="" name="gender" id="sel1_gen" class="col2_txt clr_txt" onclick="clrtxt(this);" onkeyup="checkval(this);"/></div>
+	</div>
+	<div class="row">
+		<div class="t1c1">Property</div>
+		<div class="t1c2"><input type="" name="property" id="property_text" class="col2_txt clr_txt" onclick="clrtxt(this);" onkeyup="checkval(this);"/></div>
+	</div>
+	<div class="row">
+		<div class="t1c1">Number of Son</div>
+		<div class="t1c2"><input type="" name="son" id="son_text" class="col2_txt clr_txt" onkeyup="pptoinfo(); checkval(this);" onclick="clrtxt(this);"/></div>
+	</div>
+	<div class="row">
+		<div class="t1c1">Number of Daughter</div>
+		<div class="t1c2"><input type="" name="daughter" id="daughter_text" class="col2_txt clr_txt" onclick="clrtxt(this);" onkeyup="checkval(this);"/></div>
+	</div>
+	
+<div id="tbl3">
+	<div class="row">
+		<div class="t3t4">Property Owner Information</div>
+	</div>
+	<div class="row">
+		<div class="t2c1">Number of Brother</div>
+		<div class="t2c2"><input type="" name="pobro" id="pobro_text" class="col2_txt clr_txt" onclick="clrtxt(this);" onkeyup="checkval(this);"/></div>
+	</div>
+	<div class="row">
+		<div class="t2c1">Number of Sister</div>
+		<div class="t2c2"><input type="" name="posis" id="posis_text" class="col2_txt clr_txt" onclick="clrtxt(this);" onkeyup="checkval(this);"/></div>
+	</div>	
+</div>
+	
+	<div class="row">
+	<input type="button" name="result" id="result" value="Result" onclick="res();"/>
+	<input type="button" name="clr_all" id="clr_all" value="Clear All" onclick="clrAll();"/>
+	</div>
+	
+	
+</div>
+
+
+
+<!--result tables-->
+<div id="restbl">
+	<div id="tbl2">
+		<div class="row" id="rhdrow">
+			<div id="t2_hd">PDII</div>
+			<div id="unit"></div>
+			<div id="close" ><img src="1.png"/></div>
+		</div>
+		<div class="row">
+			<div class="t2c1" id="gent2">Each Wife</div>
+			<div class="t2c2"><input type="" name="rgender" id="rgender_text" class="col2_txt"/></div>
+		</div>
+		<div class="row" id="rson_row">
+			<div class="t2c1">Each Son</div>
+			<div class="t2c2"><input type="" name="rson" id="rson_text" class="col2_txt"/></div>
+		</div>
+		<div class="row" id="rDtrRow">
+			<div class="t2c1">Each Daughter</div>
+			<div class="t2c2"><input type="" name="rdaughter" id="rdaughter_text" class="col2_txt"/></div>
+		</div>	
+	</div>
+	
+	
+	<div id="tbl4">
+	<div class="row">
+		<div class="t3t4">Property Owner Information</div>
+	</div>
+	<div class="row">
+		<div class="t2c1">Brother</div>
+		<div class="t2c2"><input type="" name="rpobro" id="rpobro_text" class="col2_txt"/></div>
+	</div>
+	<div class="row">
+		<div class="t2c1">Sister</div>
+		<div class="t2c2"><input type="" name="rposis" id="rposis_text" class="col2_txt"/></div>
+	</div>	
+</div>	
+
+</div>
+
+</form>
+</div>
+</body>
+</html>
